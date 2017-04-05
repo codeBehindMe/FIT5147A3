@@ -46,7 +46,7 @@ pop_melt$POPULATION <- as.numeric(pop_melt$POPULATION)
 # Subset out the australian population.
 pop_melt <- pop_melt[pop_melt$GEO_GROUP != 'TOTAL AUSTRALIA',]
 
-ggplotly(ggplot(pop_melt,aes(x=pop_melt$YEAR,y=pop_melt$POPULATION,color=pop_melt$GEO_GROUP)) + geom_point())
+ggplotly(ggplot(pop_melt,aes(x=pop_melt$YEAR,y=pop_melt$POPULATION,color=pop_melt$GEO_GROUP)) + geom_line())
 
 
 
