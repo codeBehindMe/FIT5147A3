@@ -4,14 +4,6 @@ import math
 import numpy
 from pythonversion import PythonVersionHandler
 
-
-# from pandas.tools.merge import _OrderedMerge
-#
-# _orig = pd.read_excel("assignment-01-data-unformated.xlsx", header=None)
-#
-# _orig.head()
-
-
 def __fallThroughToValue(df, rowNum, colNum):
     __val = df.iloc[rowNum, colNum]
 
@@ -121,3 +113,15 @@ if __name__ == '__main__':
     _melt = splitVarCol(_melt)
 
     _melt.to_csv('a1_data_melted.csv', index=False)
+
+    # Set the wrong longitude to right one.
+
+    _wrangle = _melt.copy()
+
+    # Set the wrong longitude right.
+    _wrangle['longitude'] = _wrangle['longitude'].apply(lambda x: 144.081 if x == -144.081 else x)
+
+    # Treat that extreme value in bpercentage as a missing value.
+    _wrangle['bpercent'] = _wrangle['bpercent'].apply(lambda x: float('NaN') if x == 5.16 else x)
+
+    _wrangle.to_csv("a1_geo_fixed.csv", index=False)
