@@ -3,6 +3,10 @@ require(plotly)
 require(readxl)
 require(reshape2)
 
+
+
+
+
 getStates <- function(includeTotal=TRUE){
     
     # This returns a data frame of states.

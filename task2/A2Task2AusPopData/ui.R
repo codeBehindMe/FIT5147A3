@@ -68,7 +68,8 @@ dashboardPage(
                    solidHeader = TRUE,
                    width = NULL,
                    status = "primary",
-                   selectInput(inputId="SInputStateSelect",choices=states_,label="Select State")
+                   selectInput(inputId="SInputStateSelect",choices=states_,label="Select State"),
+                   plotlyOutput("TimeWiseScatter")
                )
         )
     ))
