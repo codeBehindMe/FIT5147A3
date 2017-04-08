@@ -78,21 +78,28 @@ shinyServer(function(input, output) {
                 "Regression Rsq ::" ,
                 round(summary(fit_)$r.squared, digits = 3)
             )
-        ) %>% layout(showlegend=FALSE)
+        ) %>% layout(showlegend = FALSE)
         
     })
     
     output$TimeWiseScatter <- renderPlotly({
         data_ <- getTimeSeriesScatterData()
         
-        fit_ <- lm(data_[,input$SInputStateSelect] ~ data_$YEAR)
+        fit_ <- lm(data_[, input$SInputStateSelect] ~ data_$YEAR)
         
         plot_ly(
             data = data_,
             x = data_$YEAR,
-            y = data_[,input$SInputStateSelect]
-        )
-        
+            y = data_[, input$SInputStateSelect],
+            mode = "markers",
+            type = "scatter"
+        ) %>% layout(xaxis = list(title = "Year"),
+                     yaxis = list(title = "Population")) %>% add_trace(
+                         data = data_,
+                         x = data_$YEAR,
+                         y = fitted(fit_),
+                         mode = "lines"
+                     ) %>% layout(showlegend = FALSE)
     })
     
 })

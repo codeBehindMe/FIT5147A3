@@ -43,34 +43,49 @@ dashboardPage(
     )),
     dashboardBody(fluidRow(
         box(
+            selectInput(
+                inputId = "SInputStateSelect",
+                choices = states_,
+                label = "Select State",
+                width = 200
+            ),
             title = "Time series Population Growth",
             solidHeader = TRUE,
             status = "primary",
             width = NULL,
-            plotlyOutput("TimeSeriesState")
+            plotlyOutput("TimeWiseScatter")
         )
     ), fluidRow(
-        column(width = 6,
+        column(
+            width = 6,
             box(
                 title = "State Growth Scatter",
                 solidHeader = TRUE,
                 width = NULL,
                 status = "primary",
-                selectInput(inputId="SInputYAxis",choices=states_,label="Y-Axis"),
-                       selectInput(inputId="SInputXAxis",choices=states_,label="X-Axis"),
+                selectInput(
+                    inputId = "SInputYAxis",
+                    choices = states_,
+                    label = "Y-Axis"
+                ),
+                selectInput(
+                    inputId = "SInputXAxis",
+                    choices = states_,
+                    label = "X-Axis"
+                ),
                 plotlyOutput("StateWiseScatter")
                 
             )
         ),
-        column(width = 6,
-               box(
-                   title = "State Growth Comparison",
-                   solidHeader = TRUE,
-                   width = NULL,
-                   status = "primary",
-                   selectInput(inputId="SInputStateSelect",choices=states_,label="Select State"),
-                   plotlyOutput("TimeWiseScatter")
-               )
+        column(
+            width = 6,
+            box(
+                title = "State Growth Comparison",
+                solidHeader = TRUE,
+                width = NULL,
+                status = "primary",
+                plotlyOutput("")
+            )
         )
     ))
 )
