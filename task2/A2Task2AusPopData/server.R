@@ -13,8 +13,9 @@ require(plotly)
 require(readxl)
 require(reshape2)
 require(dplyr)
+require(leaflet)
+require(rgdal)
 source("serverSideMethods.R")
-
 ### Functions
 
 
@@ -25,6 +26,9 @@ source("serverSideMethods.R")
 ######### MAIN METHOD ###############
 #####################################
 #####################################
+
+# Load maps
+aus_map <- readOGR(".","AUS_adm1")
 
 
 # Define server logic required to draw a histogram
@@ -100,6 +104,24 @@ shinyServer(function(input, output) {
                          y = fitted(fit_),
                          mode = "lines"
                      ) %>% layout(showlegend = FALSE)
+    })
+    
+    # index_ <- eventReactive(input$YearInputSlider,{
+    #   return(as.integer(input$YearInputSlider) - 2003)
+    # })
+    
+    output$ChoroplethDensity <- renderLeaflet({
+        
+      # Get the data
+      dt_ <- getMapData()
+      
+      index_ <- as.numeric(input$YearInputSlider) - 2004
+      
+      var_ <- as.numeric(dt_[,index_][match(aus_map$NAME_1,dt_$NAME_1)])
+      qpal <- colorQuantile("Blues", var_, 12)
+      
+      leaflet(aus_map) %>% addTiles() %>% addPolygons(stroke = F, smoothFactor = 0.2, fillOpacity=1,color = qpal(var_))
+      
     })
     
 })

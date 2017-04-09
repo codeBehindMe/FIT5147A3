@@ -10,6 +10,7 @@
 library(shiny)
 require(shinydashboard)
 require(plotly)
+require(leaflet)
 # Define UI for application that draws a histogram
 # shinyUI(fluidPage(
 #
@@ -80,11 +81,19 @@ dashboardPage(
         column(
             width = 6,
             box(
-                title = "State Growth Comparison",
+                title = "Population Density",
                 solidHeader = TRUE,
                 width = NULL,
                 status = "primary",
-                plotlyOutput("")
+                leafletOutput("ChoroplethDensity"),
+                sliderInput(
+                  inputId= "YearInputSlider",
+                  label= "Select Year",
+                  min = 2005,
+                  max = 2015,
+                  step = 1,
+                  value = 2005
+                )
             )
         )
     ))

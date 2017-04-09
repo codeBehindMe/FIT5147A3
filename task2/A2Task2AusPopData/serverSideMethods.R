@@ -111,43 +111,34 @@ getMapData <- function(){
     
     pop_ <- cln_[, 1:13]
     
-    # Rescale to get pop density
-    pop_mtx <- sweep(as.matrix(cln_[,2:12]),MARGIN = 2,as.vector(unlist(cln_[,13])),FUN = "/")
+    area_ <- unlist(cln_[,ncol(cln_)])
+    names(area_) <- NULL
+    pop_ <- as.matrix(cln_[,1:12])
     
+    # Rescale to get pop density
+    # pop_mtx <- sweep(pop_,MARGIN = 2,area_,FUN = "/")
+    
+    for(i in 1:ncol(pop_)){
+      if(i != 1){
+        # for(r in 1:nrow(pop_)){
+        #   pop_[r,i] <- pop_[r,i]/area_[r]
+        # }
+        pop_[,i] <- as.numeric(pop_[,i])/area_
+      }
+    }
+    
+    # pop_mtx <- pop_
     
     # cbind colnames
-    pop_mtx <- as.data.frame(pop_mtx)
-    pop_t <- cbind(pop_[,1],pop_mtx)
-    colnames(pop_t) <- c("STATE",seq(2005,2015,1))
-    pop_t[,1] <- c("NSW","VIC","QLD","SA","WA","TAS","NT","ACT","AUS")
+    # pop_mtx <- as.data.frame(pop_mtx)
+    # pop_t <- cbind(pop_[,1],pop_mtx)
+    pop_ <- as.data.frame(pop_)
+    pop_[,2:ncol(pop_)] <- sapply(pop_[,2:ncol(pop_)],as.character)
+    pop_[,2:ncol(pop_)] <- sapply(pop_[,2:ncol(pop_)],as.double)
+    colnames(pop_) <- c("NAME_1",seq(2005,2015,1))
+    # # pop_t[,1] <- c("NSW","VIC","QLD","SA","WA","TAS","NT","ACT","AUS")
+    # 
+    # pop_t <- pop_t[-nrow(pop_t),]
     
-    pop_t <- pop_t[-nrow(pop_t),]
-    
-    return (pop_t)
+    return (pop_)
 }
-
-
-
-
-
-l_ <- list(color = toRGB("white"), width = 2)
-# specify some map projection/options
-g_ <- list(
-    scope = 'world',
-    projection = 'Equirectangular'
-)
-
-
-plot_geo(pop_t, locationmode = 'AUS') %>%
-    add_trace(
-        z = pop_t$`2005`, locations = pop_t$STATE,
-        color = pop_t$`2006`, colors = 'Purples'
-    ) %>% layout(
-        title = 'stuff',
-        geo = g_
-    )
-
-
-
-
-
